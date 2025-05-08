@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="msapplication-TileColor" content="#0E0E0E">
+    <meta name="template-color" content="#0E0E0E">
+    <meta name="description" content="Index page">
+    <meta name="keywords" content="index, page">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/template/favicon.svg">
+    <title>{% yield title %}</title>
+
+    {% include views/layouts/core-css.html %}
+    {% yield page-css %}
+
+</head>
+
+<body>
+    
+    {% include views/layouts/header.html %}
+
+    {% yield content %}
+
+    {% include views/layouts/footer.html %}
+
+    {% include views/layouts/core-js.html %}
+
+    {% yield page-js %}
+
+
+</body>
+
+</html>
