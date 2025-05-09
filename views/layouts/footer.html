@@ -5,19 +5,12 @@
                 <div class="footer-component">
                     <div class="footer-main-box"><a href="/" aria-current="page" class="w-inline-block w--current">
                             <div class="footer-logo w-embed">
-                               <img src="assets/logo.png" width="142" alt="Logo" class="logo-image">
-                            
+                                <img src="assets/logo.png" width="142" alt="Logo" class="logo-image">
+
                             </div>
                         </a>
-                        <div>
-                            <div class="margin-bottom-8">
-                                <div class="text-color-gray-200 text-size-18 text-weight-bold">
-                                   {{$config["address"]}}
-                                </div>
-                            </div>
-                            <div class="text-color-gray-300"> {{$config["phone"]}}</div>
-                        </div>
-                       
+
+
                     </div>
                     <div class="footer-links-block">
                         <div class="footer-links-box hide-this">
@@ -46,13 +39,22 @@
                                 <p class="text-lg title-follow neutral-0" style="margin-bottom: 10px;">Contact us
                                 </p>
                                 <div class="box-socials-footer">
-                                    <a class="icon-socials icon-facebook" href="https://fb.com" target="_blank">
-                                        <img style="width: 32px;     padding-right: 10px;" alt="AdsAsia"
-                                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/2023_Facebook_icon.svg/768px-2023_Facebook_icon.svg.png">
-                                    </a><a class="icon-socials icon-instagram" href="https://t.me" target="_blank">
+                                    <a class="icon-socials icon-instagram" href="{{$config["telegram1"]}}"
+                                        target="_blank">
                                         <img style="width: 32px;     padding-right: 10px;" alt="AdsAsia"
                                             src="https://static.cdnlogo.com/logos/t/39/telegram.svg"></a>
-                                    <a class="icon-socials icon-twitter" href="0976857256" target="_blank">
+                                    <a class="icon-socials icon-instagram" href="{{$config["telegram2"]}}"
+                                        target="_blank">
+                                        <img style="width: 32px;     padding-right: 10px;" alt="AdsAsia"
+                                            src="https://static.cdnlogo.com/logos/t/39/telegram.svg"></a>
+
+                                            <a class="icon-socials icon-instagram" href="{{$config["instagram"]}}"
+                                            target="_blank">
+                                            <img style="width: 32px;     padding-right: 10px;" alt="AdsAsia"
+                                                src="https://cdn-icons-png.flaticon.com/512/174/174855.png"></a>
+
+                                    <a class="icon-socials icon-twitter" href="{{$config["whatsapp"]}}"
+                                        target="_blank">
                                         <img style="width: 32px;     padding-right: 10px;" alt="AdsAsia"
                                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/1024px-WhatsApp.svg.png?20220228223904">
                                     </a>
