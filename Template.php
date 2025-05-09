@@ -54,8 +54,16 @@ class Template {
     }
 
     static function compileEchos($code) {
-        return preg_replace('~\{{\s*(.+?)\s*\}}~is', '<?php echo $1 ?>', $code);
+        return preg_replace_callback('~\{{\s*(.+?)\s*\}}~is', function ($matches) {
+            $expr = trim($matches[1]);
+            // Nếu đã có $ hoặc là hàm, giữ nguyên
+            if (preg_match('/^\$|[\[\(]/', $expr)) {
+                return "<?php echo {$expr} ?>";
+            }
+            return "<?php echo \${$expr} ?>";
+        }, $code);
     }
+    
 
     static function compileEscapedEchos($code) {
         return preg_replace('~\{{{\s*(.+?)\s*\}}}~is', '<?php echo htmlentities($1, ENT_QUOTES, \'UTF-8\') ?>', $code);
