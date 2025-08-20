@@ -1,6 +1,7 @@
 cache
 assets/uploads/*
 guide.txt
+config.php
 
 ##### Windows
 # Windows thumbnail cache files

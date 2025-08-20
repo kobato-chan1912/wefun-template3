@@ -183,6 +183,104 @@ $lang = $_GET['lang'] ?? 'en'; // mặc định 'en' nếu không có ?lang
             z-index: 1;
         }
 
+form input, form textarea, form select{
+    color: black;
+}
+
+        .contact-section {
+  padding: 60px 20px;
+  background: #fff;
+  text-align: center;
+ 
+}
+
+.contact-container {
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-form-box {
+  flex: 1;
+  text-align: left;
+}
+
+.contact-form-box h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.contact-form-box .sub-text {
+  color: #c2adad;
+  margin-bottom: 20px;
+}
+
+.contact-form-box form {
+  /* display: flex;
+  flex-wrap: wrap;
+  gap: 20px; */
+}
+
+.contact-form-box label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #ffffff;
+}
+
+.contact-form-box input,
+.contact-form-box select,
+.contact-form-box textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.contact-form-box textarea {
+  resize: vertical;
+}
+
+.col-6 {
+  width: 48%;
+}
+
+.col-12 {
+  width: 100%;
+}
+
+.btn-submit {
+  background: #0b5ed7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn-submit:hover {
+  background: #084298;
+}
+
+.contact-image {
+  flex: 1;
+  text-align: center;
+}
+
+.contact-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+
         /**
     .aurora-box {
         transform: rotate3d(0, 2, 1, 45deg);

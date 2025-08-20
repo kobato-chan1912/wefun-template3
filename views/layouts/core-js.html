@@ -635,4 +635,29 @@
         }, 600); // 600ms là thời gian scroll
     }
 
+
+    function sendTelegram() {
+            let formData = {
+                name: $('input[name=full_name]').val(),
+                tele: $('input[name=tele]').val(),
+                message: $('textarea[name=textarea_input_1]').val(),
+                vertical: $('select[name=select1]').val(),
+                phone: $('input[name=phone_number]').val(),
+            };
+
+
+            $.ajax({
+                url: '/contact.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function (response) {
+                    alert(response.message);
+                },
+                error: function () {
+                    alert('Error when sending request.');
+                }
+            });
+        }
+
 </script>

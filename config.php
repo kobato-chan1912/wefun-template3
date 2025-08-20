@@ -3,8 +3,8 @@ return [
 
     // 1 - Cấu hình bot telegram gửi contact
 
-    "telegram_bot_token" => "7727156334:AAGtVUO8sFT756f-BPs5oJtD0z03AnHKPRY", // Telegram BOT
-    "telegram_chat_id" => "-4587638305", // Group gửi contact
+    "telegram_bot_token" => "8315296463:AAGW8XlSUpQpwpCNTt-FLQaK-AGh78Z0VUI", // Telegram BOT
+    "telegram_chat_id" => "-4905008983", // Group gửi contact
 
     // 2 - Cấu hình Logo
     "logo_dark" => "/assets/customs/logo-dark.png",
