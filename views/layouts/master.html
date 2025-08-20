@@ -53,6 +53,27 @@
         transform: scaleX(-1);
     }**/
 
+    .i18n-switcher select {
+  background: transparent;
+  color: #fff;       /* đổi theo nền navbar của bạn */
+  border: 1px solid rgba(255,255,255,.25);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+.i18n-switcher select:focus {
+  border-color: #ff4d4f; /* màu nhấn */
+}
+@media (max-width: 768px) {
+  .i18n-switcher select {
+      background: #00000085;   /* màu nền bạn muốn */
+      color: #fff;             /* chữ trắng cho dễ đọc */
+      border: 1px solid #444;  /* viền nhẹ */
+  }
+}
+
+
         .hero-toggle,
         .hero-logo-icon-box {
             display: none;

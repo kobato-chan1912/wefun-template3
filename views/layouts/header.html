@@ -1,41 +1,62 @@
-<div data-animation="over-right" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease" role="banner" class="navbar w-nav">
+<?php
+$lang = $_GET['lang'] ?? 'en'; // mặc định 'en' nếu không có ?lang
+?>
+
+<div data-animation="over-right" data-collapse="medium" data-duration="400" data-easing="ease" data-easing2="ease"
+    role="banner" class="navbar w-nav">
     <div class="padding-global">
         <div class="container-1600">
-            <div class="nav-menu-wrapper"><a href="/" aria-current="page" class="nav-logo-link w-nav-brand" aria-label="home">
+            <div class="nav-menu-wrapper"><a href="/?lang=<?php echo $lang; ?>" aria-current="page" class="nav-logo-link w-nav-brand"
+                    aria-label="home">
                     <div class="embed w-embed">
                         <img src="assets/logo.png" width="142" alt="Logo" class="logo-image">
                     </div>
-                </a><nav role="navigation" class="nav-menu w-nav-menu" style="transition: all; transform: translateX(0px) translateY(0px);">
+                </a>
+                <nav role="navigation" class="nav-menu w-nav-menu"
+                    style="transition: all; transform: translateX(0px) translateY(0px);">
                     <div class="nav-menu-block">
                         <div class="nav-right-block">
-                            
-                            <div class="nav-link-box"><a href="/google.php" class="nav-text-link w-nav-link">Google</a>
+
+                            <div class="nav-link-box"><a href="/google.php?lang=<?php echo $lang; ?>"  class="nav-text-link w-nav-link">Google</a>
                                 <div class="nav-red-line"></div>
                             </div>
 
-                            <div class="nav-link-box"><a href="/tiktok.php" class="nav-text-link w-nav-link">Tiktok</a>
+                            <div class="nav-link-box"><a href="/tiktok.php?lang=<?php echo $lang; ?>" class="nav-text-link w-nav-link">Tiktok</a>
                                 <div class="nav-red-line"></div>
                             </div>
 
-                            <div class="nav-link-box"><a href="/meta.php" class="nav-text-link w-nav-link">Meta</a>
+                            <div class="nav-link-box"><a href="/meta.php?lang=<?php echo $lang; ?>" class="nav-text-link w-nav-link">Meta</a>
                                 <div class="nav-red-line"></div>
                             </div>
+                            <div class="nav-link-box">
+                                <?php echo i18n_select_html(); ?>
+                            </div>
+
                         </div>
                         <div class="nav-left-block">
-                            <div class="nav-link-box"><a href="javascript:void(0)" onclick="scrollToContact()" class="white-link w-nav-link">Contact us</a>
+                            <div class="nav-link-box"><a href="javascript:void(0)" onclick="scrollToContact()"
+                                    class="white-link w-nav-link">Contact us</a>
                                 <div class="nav-red-line"></div>
                             </div>
                         </div>
                     </div>
                 </nav>
-                
-                <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button" tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
+
+                <div class="menu-button w-nav-button" style="-webkit-user-select: text;" aria-label="menu" role="button"
+                    tabindex="0" aria-controls="w-nav-overlay-0" aria-haspopup="menu" aria-expanded="false">
                     <div class="hide w-icon-nav-menu"></div>
-                    <div class="menu-line top" style="background-color: rgb(255, 255, 255); transform: translate3d(0px, 8px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(-45deg) skew(0deg, 0deg); transform-style: preserve-3d;"></div>
-                    <div class="menu-line middle" style="background-color: rgb(255, 255, 255); transform: translate3d(0px, 0px, 0px) scale3d(0, 0, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;"></div>
-                    <div class="menu-line bottom" style="background-color: rgb(255, 255, 255); transform: translate3d(0px, -8px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(45deg) skew(0deg, 0deg); transform-style: preserve-3d;"></div>
+                    <div class="menu-line top"
+                        style="background-color: rgb(255, 255, 255); transform: translate3d(0px, 8px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(-45deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+                    </div>
+                    <div class="menu-line middle"
+                        style="background-color: rgb(255, 255, 255); transform: translate3d(0px, 0px, 0px) scale3d(0, 0, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+                    </div>
+                    <div class="menu-line bottom"
+                        style="background-color: rgb(255, 255, 255); transform: translate3d(0px, -8px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(45deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-<div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0" style="display: none;"></div></div>
+    <div class="w-nav-overlay" data-wf-ignore="" id="w-nav-overlay-0" style="display: none;"></div>
+</div>

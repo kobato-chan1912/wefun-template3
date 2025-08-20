@@ -5,11 +5,19 @@ class Template {
     static $cache_path = 'cache/';
     static $cache_enabled = FALSE;
 
-    static function view($file, $data = array()) {
+        static function view($file, $data = array()) {
         $cached_file = self::cache($file);
+
+        // --- i18n backend inject ---
+        require_once __DIR__ . '/i18n.php'; // file i18n bạn tạo ở root
+        i18n_load();    // đọc ?lang=vi|en|ru|zh-CN hoặc cookie
+        i18n_start();   // bật output buffer + filter dịch toàn trang
+        // ---------------------------
+
         extract($data, EXTR_SKIP);
         require $cached_file;
     }
+
 
     static function cache($file) {
         if (!file_exists(self::$cache_path)) {

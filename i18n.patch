@@ -1,0 +1,415 @@
+diff --git a/i18n.php b/i18n.php
+new file mode 100644
+--- /dev/null
++++ b/i18n.php
+@@ -0,0 +1,173 @@
++<?php
++// Backend-only i18n for wefun-template3
++// Layer 1: key-based dictionary via __('key', 'fallback')
++// Layer 2: full-page backend replace via lang/{locale}_replace.php
++declare(strict_types=1);
++
++function i18n_supported(): array {
++  return ['vi','en','ru','zh-CN'];
++}
++
++function i18n_map_filename(string $locale): string {
++  $map = ['zh-CN'=>'zh_CN','zh_CN'=>'zh_CN','ru'=>'ru','vi'=>'vi','en'=>'en'];
++  $key = $map[$locale] ?? 'vi';
++  return __DIR__."/lang/{$key}.php";
++}
++
++function i18n_load(?string $locale=null): void {
++  if ($locale===null) {
++    $locale = $_GET['lang'] ?? ($_COOKIE['lang'] ?? 'vi');
++  }
++  $file = i18n_map_filename($locale);
++  if (!file_exists($file)) $file = i18n_map_filename('vi');
++  $GLOBALS['__i18n'] = require $file;
++  $GLOBALS['__i18n_locale'] = $locale;
++  if (!headers_sent()) {
++    setcookie('lang', $locale, time()+60*60*24*30, '/');
++  }
++}
++
++function __(string $key, string $fallback=''): string {
++  $dict = $GLOBALS['__i18n'] ?? [];
++  if (isset($dict[$key])) return $dict[$key];
++  return $fallback!=='' ? $fallback : $key;
++}
++
++function __e(string $key, string $fallback=''): void {
++  echo htmlspecialchars(__( $key, $fallback), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
++}
++
++// Layer 2: full HTML replace on the backend
++function i18n_start(): void {
++  if (!isset($GLOBALS['__i18n'])) i18n_load();
++  ob_start('i18n_filter');
++}
++
++function i18n_filter(string $html): string {
++  $locale = $GLOBALS['__i18n_locale'] ?? 'vi';
++  if ($locale==='vi' || $locale==='en') return $html; // keep original as-is
++  $file = __DIR__."/lang/{$locale}_replace.php";
++  if (!file_exists($file)) return $html;
++  $map = require $file;
++  if (!is_array($map) || !$map) return $html;
++  // naive but effective global replacements for static site text:
++  // keep assets/images untouched (we don't change URLs)
++  return strtr($html, $map);
++}
++
++// Backend language switcher (no JS)
++function i18n_select_html(): string {
++  $current = $GLOBALS['__i18n_locale'] ?? ($_COOKIE['lang'] ?? 'vi');
++  $opts = ['vi'=>'Tiếng Việt','en'=>'English','ru'=>'Русский','zh-CN'=>'简体中文'];
++  $action = htmlspecialchars(strtok($_SERVER['REQUEST_URI'],'?'));
++  $html  = '<form method="get" action="'.$action.'" class="i18n-switcher" style="display:inline-block">';
++  $html .= '<select name="lang" onchange="this.form.submit()">';
++  foreach ($opts as $code=>$label) {
++    $sel = ($current===$code)?' selected':'';
++    $html .= '<option value="'.htmlspecialchars($code).'"'.$sel.'>'.htmlspecialchars($label).'</option>';
++  }
++  $html .= '</select>';
++  foreach ($_GET as $k=>$v) {
++    if ($k==='lang') continue;
++    $html .= '<input type="hidden" name="'.htmlspecialchars($k).'" value="'.htmlspecialchars((string)$v).'">';
++  }
++  $html .= '</form>';
++  return $html;
++}
+diff --git a/lang/en.php b/lang/en.php
+new file mode 100644
+--- /dev/null
++++ b/lang/en.php
+@@ -0,0 +1,79 @@
++<?php
++return [
++  // NAV
++  'nav.home' => 'Home',
++  'nav.google' => 'Google',
++  'nav.tiktok' => 'TikTok',
++  'nav.meta' => 'Meta',
++  'nav.contact' => 'Contact us',
++
++  // HERO / GENERIC
++  'hero.title' => 'Grow your business with us',
++  'hero.subtitle' => 'Smart solutions for Google, TikTok and Meta.',
++
++  // BUTTONS / COMMON
++  'btn.learn_more' => 'Learn more',
++  'btn.contact_us' => 'Contact us',
++  'btn.read_more' => 'Read more',
++  'btn.submit' => 'Submit',
++  'btn.send' => 'Send',
++
++  // CONTACT
++  'contact.title' => 'Send us a message',
++  'contact.name' => 'Name',
++  'contact.email' => 'Email',
++  'contact.phone' => 'Phone',
++  'contact.message' => 'Message',
++  'contact.send' => 'Send message',
++
++  // FOOTER
++  'footer.about' => 'About',
++  'footer.solutions' => 'Solutions',
++  'footer.products' => 'Products',
++  'footer.features' => 'Features',
++  'footer.demo' => 'Demo',
++  'footer.pricing' => 'Pricing',
++  'footer.contact' => 'Contact',
++  'footer.privacy' => 'Privacy',
++  'footer.terms' => 'Terms',
++  'footer.rights' => 'All rights reserved.',
++];
+diff --git a/lang/vi.php b/lang/vi.php
+new file mode 100644
+--- /dev/null
++++ b/lang/vi.php
+@@ -0,0 +1,81 @@
++<?php
++return [
++  // NAV
++  'nav.home' => 'Trang chủ',
++  'nav.google' => 'Google',
++  'nav.tiktok' => 'TikTok',
++  'nav.meta' => 'Meta',
++  'nav.contact' => 'Liên hệ',
++
++  // HERO / GENERIC
++  'hero.title' => 'Phát triển doanh nghiệp cùng chúng tôi',
++  'hero.subtitle' => 'Giải pháp thông minh cho Google, TikTok và Meta.',
++
++  // BUTTONS / COMMON
++  'btn.learn_more' => 'Tìm hiểu thêm',
++  'btn.contact_us' => 'Liên hệ',
++  'btn.read_more' => 'Xem thêm',
++  'btn.submit' => 'Gửi',
++  'btn.send' => 'Gửi',
++
++  // CONTACT
++  'contact.title' => 'Gửi tin nhắn cho chúng tôi',
++  'contact.name' => 'Họ và tên',
++  'contact.email' => 'Email',
++  'contact.phone' => 'Số điện thoại',
++  'contact.message' => 'Nội dung',
++  'contact.send' => 'Gửi liên hệ',
++
++  // FOOTER
++  'footer.about' => 'Giới thiệu',
++  'footer.solutions' => 'Giải pháp',
++  'footer.products' => 'Sản phẩm',
++  'footer.features' => 'Tính năng',
++  'footer.demo' => 'Demo',
++  'footer.pricing' => 'Bảng giá',
++  'footer.contact' => 'Liên hệ',
++  'footer.privacy' => 'Bảo mật',
++  'footer.terms' => 'Điều khoản',
++  'footer.rights' => 'Đã đăng ký bản quyền.',
++];
+diff --git a/lang/ru.php b/lang/ru.php
+new file mode 100644
+--- /dev/null
++++ b/lang/ru.php
+@@ -0,0 +1,83 @@
++<?php
++return [
++  // NAV
++  'nav.home' => 'Главная',
++  'nav.google' => 'Google',
++  'nav.tiktok' => 'TikTok',
++  'nav.meta' => 'Meta',
++  'nav.contact' => 'Связаться с нами',
++
++  // HERO / GENERIC
++  'hero.title' => 'Развивайте свой бизнес вместе с нами',
++  'hero.subtitle' => 'Умные решения для Google, TikTok и Meta.',
++
++  // BUTTONS / COMMON
++  'btn.learn_more' => 'Подробнее',
++  'btn.contact_us' => 'Связаться',
++  'btn.read_more' => 'Читать далее',
++  'btn.submit' => 'Отправить',
++  'btn.send' => 'Отправить',
++
++  // CONTACT
++  'contact.title' => 'Свяжитесь с нами',
++  'contact.name' => 'Имя',
++  'contact.email' => 'Эл. почта',
++  'contact.phone' => 'Телефон',
++  'contact.message' => 'Сообщение',
++  'contact.send' => 'Отправить сообщение',
++
++  // FOOTER
++  'footer.about' => 'О нас',
++  'footer.solutions' => 'Решения',
++  'footer.products' => 'Продукты',
++  'footer.features' => 'Функции',
++  'footer.demo' => 'Демо',
++  'footer.pricing' => 'Цены',
++  'footer.contact' => 'Контакты',
++  'footer.privacy' => 'Конфиденциальность',
++  'footer.terms' => 'Условия',
++  'footer.rights' => 'Все права защищены.',
++];
+diff --git a/lang/zh_CN.php b/lang/zh_CN.php
+new file mode 100644
+--- /dev/null
++++ b/lang/zh_CN.php
+@@ -0,0 +1,83 @@
++<?php
++return [
++  // NAV
++  'nav.home' => '首页',
++  'nav.google' => 'Google',
++  'nav.tiktok' => '抖音',
++  'nav.meta' => 'Meta',
++  'nav.contact' => '联系我们',
++
++  // HERO / GENERIC
++  'hero.title' => '与我们一起发展您的业务',
++  'hero.subtitle' => '面向 Google、抖音与 Meta 的智能解决方案。',
++
++  // BUTTONS / COMMON
++  'btn.learn_more' => '了解更多',
++  'btn.contact_us' => '联系我们',
++  'btn.read_more' => '阅读更多',
++  'btn.submit' => '提交',
++  'btn.send' => '发送',
++
++  // CONTACT
++  'contact.title' => '给我们留言',
++  'contact.name' => '姓名',
++  'contact.email' => '邮箱',
++  'contact.phone' => '电话',
++  'contact.message' => '留言',
++  'contact.send' => '发送留言',
++
++  // FOOTER
++  'footer.about' => '关于我们',
++  'footer.solutions' => '解决方案',
++  'footer.products' => '产品',
++  'footer.features' => '功能',
++  'footer.demo' => '演示',
++  'footer.pricing' => '价格',
++  'footer.contact' => '联系我们',
++  'footer.privacy' => '隐私政策',
++  'footer.terms' => '条款',
++  'footer.rights' => '版权所有。',
++];
+diff --git a/lang/ru_replace.php b/lang/ru_replace.php
+new file mode 100644
+--- /dev/null
++++ b/lang/ru_replace.php
+@@ -0,0 +1,120 @@
++<?php
++// Backend full-page replace map (string-to-string) for Russian
++// Add more pairs as you see on the site. Left = original text exactly as in HTML.
++return [
++  'Home' => 'Главная',
++  'Overview' => 'Обзор',
++  'Features' => 'Функции',
++  'Solutions' => 'Решения',
++  'Demo' => 'Демо',
++  'Pricing' => 'Цены',
++  'Products' => 'Продукты',
++  'Contact us' => 'Связаться с нами',
++  'Contact' => 'Контакты',
++  'Send us a message' => 'Свяжитесь с нами',
++  'Name' => 'Имя',
++  'Email' => 'Эл. почта',
++  'Phone' => 'Телефон',
++  'Message' => 'Сообщение',
++  'Send message' => 'Отправить сообщение',
++  'Learn more' => 'Подробнее',
++  'Read more' => 'Читать далее',
++  'Submit' => 'Отправить',
++  'All rights reserved.' => 'Все права защищены.',
++  // Common marketing lines (you may remove if not present)
++  'Grow your business with us' => 'Развивайте свой бизнес вместе с нами',
++  'Smart solutions for Google, TikTok and Meta.' => 'Умные решения для Google, TikTok и Meta.',
++];
+diff --git a/lang/zh_CN_replace.php b/lang/zh_CN_replace.php
+new file mode 100644
+--- /dev/null
++++ b/lang/zh_CN_replace.php
+@@ -0,0 +1,122 @@
++<?php
++// Backend full-page replace map (string-to-string) for Simplified Chinese
++// Add more pairs as you see on the site. Left = original text exactly as in HTML.
++return [
++  'Home' => '首页',
++  'Overview' => '概览',
++  'Features' => '功能',
++  'Solutions' => '解决方案',
++  'Demo' => '演示',
++  'Pricing' => '价格',
++  'Products' => '产品',
++  'Contact us' => '联系我们',
++  'Contact' => '联系我们',
++  'Send us a message' => '给我们留言',
++  'Name' => '姓名',
++  'Email' => '邮箱',
++  'Phone' => '电话',
++  'Message' => '留言',
++  'Send message' => '发送留言',
++  'Learn more' => '了解更多',
++  'Read more' => '阅读更多',
++  'Submit' => '提交',
++  'All rights reserved.' => '版权所有。',
++  // Common marketing lines (you may remove if not present)
++  'Grow your business with us' => '与我们一起发展您的业务',
++  'Smart solutions for Google, TikTok and Meta.' => '面向 Google、抖音与 Meta 的智能解决方案。',
++];
+diff --git a/index.php b/index.php
+--- a/index.php
++++ b/index.php
+@@ -1,3 +1,7 @@
++<?php
++require __DIR__.'/i18n.php';
++i18n_start(); // load + backend full-page replace
++?>
+ <?php
+ // existing content of index.php remains below
+ // ...
+diff --git a/google.php b/google.php
+--- a/google.php
++++ b/google.php
+@@ -1,3 +1,7 @@
++<?php
++require __DIR__.'/i18n.php';
++i18n_start();
++?>
+ <?php
+ // existing content of google.php remains below
+ // ...
+diff --git a/tiktok.php b/tiktok.php
+--- a/tiktok.php
++++ b/tiktok.php
+@@ -1,3 +1,7 @@
++<?php
++require __DIR__.'/i18n.php';
++i18n_start();
++?>
+ <?php
+ // existing content of tiktok.php remains below
+ // ...
+diff --git a/meta.php b/meta.php
+--- a/meta.php
++++ b/meta.php
+@@ -1,3 +1,7 @@
++<?php
++require __DIR__.'/i18n.php';
++i18n_start();
++?>
+ <?php
+ // existing content of meta.php remains below
+ // ...
+diff --git a/contact.php b/contact.php
+--- a/contact.php
++++ b/contact.php
+@@ -1,3 +1,17 @@
++<?php
++require __DIR__.'/i18n.php';
++i18n_start();
++?>
++<?php // Example: convert key hotspots (safe to duplicate if not found) ?>
++<?php /* Replace literals with keys in your markup where convenient, e.g.:
++   <h1><?php __e('contact.title','Send us a message'); ?></h1>
++   <label><?php __e('contact.name','Name'); ?></label>
++   <label><?php __e('contact.email','Email'); ?></label>
++   <label><?php __e('contact.phone','Phone'); ?></label>
++   <label><?php __e('contact.message','Message'); ?></label>
++   <button type="submit"><?php __e('contact.send','Send message'); ?></button>
++*/ ?>
++ 
+ <?php
+ // existing content of contact.php remains below
+ // ...
+diff --git a/Template.php b/Template.php
+--- a/Template.php
++++ b/Template.php
+@@ -1,3 +1,24 @@
++<?php
++// include early so everything rendered below is covered by the backend filter
++if (!isset($GLOBALS['__i18n'])) {
++  $i18nFile = __DIR__.'/i18n.php';
++  if (file_exists($i18nFile)) {
++    require $i18nFile;
++    i18n_start();
++  }
++}
++?>
++<?php /* Optional: drop-in language switcher.
++   Move this to your header/nav partial later if you want.
++   Example usage inside HTML:
++   <div class="lang-switcher">
++     <?= i18n_select_html() ?>
++   </div>
++*/ ?>
++
+ <?php
+ // existing Template.php content remains below
+ // ...
